@@ -24,8 +24,12 @@ class AuthController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
+      
+        $token = $user->createToken('api-token')->plainTextToken;
+
         return response()->json([
             'message' => 'Account created successfully',
+            'token' => $token,
         ], 201);
     }
 
@@ -51,9 +55,10 @@ class AuthController extends Controller
         ], 200);
     }
 
+   
     public function logout(Request $request)
     {
-        // Invalider le token actuel
+      
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
@@ -61,3 +66,4 @@ class AuthController extends Controller
         ], 200);
     }
 }
+
